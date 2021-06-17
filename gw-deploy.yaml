@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tyk-gtw
+  labels:
+    app: tyk-gtw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tyk-gtw
+  template:
+    metadata:
+      labels:
+        app: tyk-gtw
+    spec:
+      containers:
+        - name: tyk-gtw
+          image: "tykio/tyk-gateway:v3.1.0"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: TYK_GW_LISTENPORT
+              value: "8080"
+            - name: TYK_GW_SECRET
+              value: "foo"
+            - name: TYK_GW_STORAGE_HOST
+              value: "redis"
+            - name: TYK_GW_STORAGE_PORT
+              value: "6379"
+          volumeMounts:
+            - name: tyk-apis
+              mountPath: /opt/tyk-gateway/apps/my-rest-api.json
+              subPath: my-rest-api.json
+            - name: tyk-apis
+              mountPath: /opt/tyk-gateway/apps/another-api.json
+              subPath: another-api.json
+            - name: tyk-apis
+              mountPath: /opt/tyk-gateway/apps/third-api.json
+              subPath: third-api.json
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+      volumes:
+        - name: tyk-apis
+          configMap:
+            name: tyk-apis
+            items:
+              - key: my-rest-api
+                path: my-rest-api.json
+              - key: another-api
+                path: another-api.json
+              - key: third-api
+                path: third-api.json
+                
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tyk-svc
+  labels:
+    app: tyk-gtw
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: tyk-gtw

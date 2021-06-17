@@ -1,0 +1,74 @@
+apiVersion: v1
+data:
+  my-rest-api: |
+    {
+      "name": "my rest api",
+      "slug": "my-rest-api",
+      "api_id": "1",
+      "org_id": "1",
+      "use_keyless": true,
+      "version_data": {
+        "not_versioned": true,
+        "versions": {
+          "Default": {
+            "name": "Default",
+            "use_extended_paths": true
+          }
+        }
+      },
+      "proxy": {
+        "listen_path": "/my-rest-api/",
+        "target_url": "http://my-rest-api:8000/",
+        "strip_listen_path": true
+      },
+      "active": true
+    }
+  another-api: |
+    {
+      "name": "another api",
+      "slug": "another-api",
+      "api_id": "2",
+      "org_id": "1",
+      "use_keyless": true,
+      "version_data": {
+        "not_versioned": true,
+        "versions": {
+          "Default": {
+            "name": "Default",
+            "use_extended_paths": true
+          }
+        }
+      },
+      "proxy": {
+        "listen_path": "/another-api/",
+        "target_url": "http://another-api:8000/",
+        "strip_listen_path": true
+      },
+      "active": true
+    }
+  third-api: |
+    {
+      "name": "my third api",
+      "slug": "third-api",
+      "api_id": "3",
+      "org_id": "1",
+      "use_keyless": true,
+      "version_data": {
+        "not_versioned": true,
+        "versions": {
+          "Default": {
+            "name": "Default",
+            "use_extended_paths": true
+          }
+        }
+      },
+      "proxy": {
+        "listen_path": "/third-api/",
+        "target_url": "http://third-api:8000/",
+        "strip_listen_path": true
+      },
+      "active": true
+    }
+kind: ConfigMap
+metadata:
+  name: tyk-apis
