@@ -1,6 +1,6 @@
 ## Logging & Observability with Elastic Search
 
-Let's add 
+Let's add ELK stack and have Tyk push ingress API analytics to ELK.
 
 1. Step 1, Install ElasticSearch, Kibana, and Tyk Pump 
 ```
@@ -36,4 +36,4 @@ $ kubectl port-forward deployment/kibana 5601
 Forwarding from 127.0.0.1:5601 -> 5601
 Forwarding from [::1]:5601 -> 5601
 ```
-[!](kibana-screenshot.png)
+![kibana screenshot](kibana-screenshot.png)
