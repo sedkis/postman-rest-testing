@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tyk-pump
+  labels:
+    app: tyk-pump
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tyk-pump
+  template:
+    metadata:
+      labels:
+        app: tyk-pump
+    spec:
+      containers:
+        - name: tyk-pump
+          image: "tykio/tyk-pump-docker-pub:v1.4.0"
+          imagePullPolicy: Always
+          env:
+            - name: REDIGOCLUSTER_SHARDCOUNT
+              value: "128"
+            - name: TYK_PMP_PURGEDELAY
+              value: "1"
+            - name: TYK_PMP_ANALYTICSSTORAGECONFIG_ADDRS
+              value: "redis:6379"
+            - name: TYK_PMP_ANALYTICSSTORAGETYPE
+              value: "redis"
+            # - name: TYK_PMP_PUMPS_STDOUT_TYPE
+            #   value: "stdout"
+            # - name: TYK_PMP_PUMPS_STDOUT_META_LOGFIELDNAME
+            #   value: "tyk-record"
+            # - name: TYK_PMP_PUMPS_STDOUT_META_FORMAT
+            #   value: "json"
+            - name: TYK_PMP_PUMPS_ELK_TYPE
+              value: elasticsearch
+            - name: TYK_PMP_PUMPS_ELK_META_ELASTICSEARCHURL
+              value: "http://elasticsearch-master:9200"
+            - name: TYK_PMP_PUMPS_ELK_META_INDEXNAME
+              value: "tyk"
+            - name: TYK_PMP_PUMPS_ELK_META_VERSION
+              value: "6"
+            - name: TYK_PMP_PUMPS_ELK_META_DOCUMENTTYPE
+              value: "tyk_analytics"
+            - name: TYK_PMP_PUMPS_ELK_META_DISABLEBULK
+              value: "true"
+            - name: "TYK_LOGLEVEL"
+              value: "info"
+          volumeMounts:
+            - name: pump-config
+              mountPath: /opt/tyk-pump/pump.conf
+              subPath: pump.conf
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+      volumes:
+        - name: pump-config
+          configMap:
+            name: pump-config
+            items:
+              - key: pump.conf
+                path: pump.conf
+
+
+                

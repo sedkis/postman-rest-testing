@@ -29,6 +29,8 @@ spec:
               value: "redis"
             - name: TYK_GW_STORAGE_PORT
               value: "6379"
+            - name: TYK_GW_ENABLEANALYTICS
+              value: "true"
           volumeMounts:
             - name: tyk-apis
               mountPath: /opt/tyk-gateway/apps/my-rest-api.json
@@ -39,6 +41,9 @@ spec:
             - name: tyk-apis
               mountPath: /opt/tyk-gateway/apps/third-api.json
               subPath: third-api.json
+            - name: tyk-config
+              mountPath: /opt/tyk-gateway/tyk.conff
+              subPath: tyk.conf
           resources:
             limits:
               memory: 512Mi
@@ -47,6 +52,12 @@ spec:
               memory: 256Mi
               cpu: "0.2"
       volumes:
+        - name: tyk-config
+          configMap:
+            name: tyk-config
+            items:
+              - key: tyk.conf
+                path: tyk.conf
         - name: tyk-apis
           configMap:
             name: tyk-apis
@@ -66,6 +77,7 @@ metadata:
   labels:
     app: tyk-gtw
 spec:
+  type: LoadBalancer
   ports:
     - port: 8080
       targetPort: 8080
