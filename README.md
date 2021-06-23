@@ -1,25 +1,19 @@
 # Tyk OSS Deployment
 
-1. Create a new namespace
+1. Deploy Tyk APIG, Redis, ElasticSearch / Kibana, Tyk Pump & Tyk Operator
 ```
-$ kubectl create ns apps
+$ ./launch.sh all
 ```
 
+2.  After all resources are running, create APIs
+```
+$ kubectl apply -f ./apis/.
+```
 
-2. Deploy APIs and API Gateway into namespace
+3. Can port-forward Kibana and Gateways to access both:
 
 ```
-$ kubectl apply -f . -n apps
-
-deployment.apps/another-api created
-service/another-api created
-configmap/tyk-apis created
-deployment.apps/tyk-gtw created
-service/tyk-svc created
-deployment.apps/my-rest-api created
-service/my-rest-api created
-deployment.apps/redis created
-service/redis created
-deployment.apps/third-api created
-service/third-api created
+$ kubectl port-forward svc/tyk-svc 8080:8080
+...
+$ kubectl port-forward deployment/kibana 5601
 ```

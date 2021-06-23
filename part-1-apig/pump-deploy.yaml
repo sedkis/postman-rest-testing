@@ -27,12 +27,12 @@ spec:
               value: "redis:6379"
             - name: TYK_PMP_ANALYTICSSTORAGETYPE
               value: "redis"
-            # - name: TYK_PMP_PUMPS_STDOUT_TYPE
-            #   value: "stdout"
-            # - name: TYK_PMP_PUMPS_STDOUT_META_LOGFIELDNAME
-            #   value: "tyk-record"
-            # - name: TYK_PMP_PUMPS_STDOUT_META_FORMAT
-            #   value: "json"
+            - name: TYK_PMP_PUMPS_STDOUT_TYPE
+              value: "stdout"
+            - name: TYK_PMP_PUMPS_STDOUT_META_LOGFIELDNAME
+              value: "tyk-record"
+            - name: TYK_PMP_PUMPS_STDOUT_META_FORMAT
+              value: "json"
             - name: TYK_PMP_PUMPS_ELK_TYPE
               value: elasticsearch
             - name: TYK_PMP_PUMPS_ELK_META_ELASTICSEARCHURL

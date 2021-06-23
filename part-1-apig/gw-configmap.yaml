@@ -41,6 +41,7 @@ data:
           "enable_health_checks": false,
           "health_check_value_timeouts": 60
       },
+      "enable_jsvm":true,
       "optimisations_use_async_session_write": true,
       "enable_non_transactional_rate_limiter": true,
       "enable_sentinel_rate_limiter": false,

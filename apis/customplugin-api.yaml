@@ -1,0 +1,18 @@
+apiVersion: tyk.tyk.io/v1alpha1
+kind: ApiDefinition
+metadata:
+  name: httpbin
+spec:
+  name: httpbin
+  use_keyless: true
+  protocol: http
+  active: true
+  proxy:
+    target_url: http://httpbin.org
+    listen_path: /httpbin
+    strip_listen_path: true
+  custom_middleware:
+    driver: otto
+    pre:
+      - name: exampleJavaScriptMiddlewarePreHook
+        path: "/mnt/tyk-gateway/middleware/jsPlugin.js"
