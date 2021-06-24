@@ -7,6 +7,7 @@ spec:
   use_keyless: true
   protocol: http
   active: true
+  do_not_track: false
   proxy:
     target_url: "http://foo"
     listen_path: /udg
@@ -23,6 +24,7 @@ spec:
 
       type Query {
         countries: [Country]
+        country(code: ID!): Country
       }
 
       type RestCountry {
@@ -36,6 +38,17 @@ spec:
         mapping:
           disabled: false
           path: countries
+        data_source:
+          kind: GraphQLDataSource
+          data_source_config:
+            url: "https://countries.trevorblades.com"
+            method: POST
+            status_code_type_name_mappings: []
+      - type_name: Query
+        field_name: country
+        mapping:
+          disabled: false
+          path: country
         data_source:
           kind: GraphQLDataSource
           data_source_config:
