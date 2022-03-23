@@ -9,6 +9,7 @@ $ ./launch.sh all
 ```
 $ kubectl create ns apps
 namespace/apps created
+
 $ kubectl apply -f ./apis/httpbin.yaml
 deployment.apps/httpbin created
 service/httpbin created
