@@ -1,11 +1,11 @@
-# automatic REST testing in E2E and CICD settings with Postman's Newman SDK
+# Declarative API testing usign Postman's Newman SDK
 
-1. Deploy Tyk APIG, Redis, ElasticSearch / Kibana, Tyk Pump & Tyk Operator
+1. Deploy our stack (Tyk APIG, Redis, ElasticSearch / Kibana, Tyk Pump & Tyk Operator)
 ```
 $ ./launch.sh all
 ```
 
-2.  After all resources are running, create APIs
+2.  After our stack is running, create API
 ```
 $ kubectl create ns apps
 namespace/apps created
@@ -23,8 +23,7 @@ $ kubectl port-forward svc/tyk-svc 8080:8080
 $ kubectl port-forward deployment/kibana 5601
 ```
 
-4. Test with curl or newman:
-
+4. Test with curl:
 ```
 $ curl localhost:8080/httpbin/get
 
