@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "020f13cb-dafa-4091-96ab-9441354f14f9",
+		"name": "Postman <> Tyk <> Newman example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Httpbin GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body to be JSON\", function () {",
+							"    pm.response.to.have.jsonBody",
+							"});",
+							"",
+							"pm.test(\"Response body to be correct\", function () {",
+							"",
+							"    // Looks like this:",
+							"    //   {",
+							"    //     \"args\": {},",
+							"    //     \"headers\": {",
+							"    //         \"Accept\": \"*/*\",",
+							"    //         \"Accept-Encoding\": \"gzip, deflate, br\",",
+							"    //         \"Host\": \"httpbin.apps:8000\",",
+							"    //         \"Postman-Token\": \"efa08b75-17fe-49d0-98d1-995054434635\",",
+							"    //         \"User-Agent\": \"PostmanRuntime/7.29.0\"",
+							"    //     },",
+							"    //     \"origin\": \"127.0.0.1\",",
+							"    //     \"url\": \"http://httpbin.apps:8000/get\"",
+							"    //   }",
+							"    const responseJson = pm.response.json();",
+							"",
+							"    pm.expect(responseJson.origin).to.eql(\"127.0.0.1\");",
+							"    pm.expect(responseJson.headers['Host']).to.eql(\"httpbin.apps:8000\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/httpbin/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"httpbin",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -24,7 +24,7 @@ spec:
             - name: TYK_PMP_PURGEDELAY
               value: "2"
             - name: TYK_PMP_DONTPURGEUPTIMEDATA
-              value: "false"
+              value: "true"
             - name: REDIGOCLUSTER_SHARDCOUNT
               value: "128"
             - name: TYK_PMP_PURGEDELAY

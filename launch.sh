@@ -4,11 +4,6 @@
 
 if [ $1 == "all" ]
 then 
-
-    # mkdir charts
-    # git clone https://github.com/TykTechnologies/tyk-operator ./charts/tyk-operator
-    echo "Cloned repositories, ready to go"
-
     echo "Creating tyk-operator-system namespace.."
     kubectl create namespace tyk-operator-system --dry-run=client -o yaml | kubectl apply -f -
     echo "Creating tyk namespace.."
@@ -46,11 +41,11 @@ then
 
 elif [ $1 == "all-down" ]
 then 
-    echo "Deleting 'tyk' and 'tyk-operator-system' namespaces'"
-    kubectl delete tykapis --all
+    echo "Deleting all resources"
+    kubectl delete crd apidefinitions.tyk.tyk.io
     kubectl delete ns tyk
     kubectl delete ns tyk-operator-system
-    
+    kubectl delete ns apps
     exit 0
 elif [ $1 == "install-cert-manager" ]
 then 
