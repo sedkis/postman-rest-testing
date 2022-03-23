@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: tyk-gtw
-          image: "tykio/tyk-gateway:v3.1.0"
+          image: "tykio/tyk-gateway:v4.0.0"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -35,9 +35,6 @@ spec:
             - name: tyk-config
               mountPath: /opt/tyk-gateway/tyk.conf
               subPath: tyk.conf
-            - name: tyk-customplugin-1
-              mountPath: /mnt/tyk-gateway/middleware/jsPlugin.js
-              subPath: jsPlugin.js
           resources:
             limits:
               memory: 512Mi
@@ -52,12 +49,6 @@ spec:
             items:
               - key: tyk.conf
                 path: tyk.conf
-        - name: tyk-customplugin-1
-          configMap:
-            name: tyk-customplugin-1
-            items:
-              - key: jsPlugin.js
-                path: jsPlugin.js
                 
 ---
 apiVersion: v1

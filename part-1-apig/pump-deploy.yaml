@@ -16,9 +16,15 @@ spec:
     spec:
       containers:
         - name: tyk-pump
-          image: "tykio/tyk-pump-docker-pub:v1.4.0"
+          image: "tykio/tyk-pump-docker-pub:v1.5.1"
           imagePullPolicy: Always
           env:
+            - name: TYK_PMP_OMITCONFIGFILE
+              value: "true"
+            - name: TYK_PMP_PURGEDELAY
+              value: "2"
+            - name: TYK_PMP_DONTPURGEUPTIMEDATA
+              value: "false"
             - name: REDIGOCLUSTER_SHARDCOUNT
               value: "128"
             - name: TYK_PMP_PURGEDELAY
@@ -47,10 +53,6 @@ spec:
               value: "true"
             - name: "TYK_LOGLEVEL"
               value: "info"
-          volumeMounts:
-            - name: pump-config
-              mountPath: /opt/tyk-pump/pump.conf
-              subPath: pump.conf
           resources:
             limits:
               memory: 512Mi
@@ -58,13 +60,5 @@ spec:
             requests:
               memory: 256Mi
               cpu: "0.2"
-      volumes:
-        - name: pump-config
-          configMap:
-            name: pump-config
-            items:
-              - key: pump.conf
-                path: pump.conf
-
 
                 

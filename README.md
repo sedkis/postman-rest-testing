@@ -17,3 +17,12 @@ $ kubectl port-forward svc/tyk-svc 8080:8080
 ...
 $ kubectl port-forward deployment/kibana 5601
 ```
+
+4. Test with curl or newman:
+
+```
+$ curl localhost:8080/httpbin/get
+```
+
+
+5. 

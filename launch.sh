@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+# set -eo pipefail
 
 if [ $1 == "all" ]
 then 
@@ -10,21 +10,23 @@ then
     echo "Cloned repositories, ready to go"
 
     echo "Creating tyk-operator-system namespace.."
-    kubectl create namespace tyk-operator-system
+    kubectl create namespace tyk-operator-system --dry-run=client -o yaml | kubectl apply -f -
     echo "Creating tyk namespace.."
-    kubectl create namespace tyk
+    kubectl create namespace tyk --dry-run=client -o yaml | kubectl apply -f -
     echo "Successfully created all namespaces :)"
 
     echo "Installing Tyk GW & Redis"
     kubectl apply -f ./part-1-apig/. -n tyk
-    echo "All is good. Go for it :)"
-    
+
     CERT_MANAGER_INSTALLED=$(kubectl get all -n cert-manager)
     if [ CERT_MANAGER_INSTALLED == "No resources found in cert-manager namespace." ]
     then
         echo "You must install (and wait to come to life) cert-manager by using './launch.sh install-cert-manager'"
         exit 1
     fi
+
+    echo "Installing Tyk Operator"
+
     echo "Creating tyk-operator-conf secret in tyk-operator-system namespace.."
     kubectl create secret -n tyk-operator-system generic tyk-operator-conf \
         --from-literal "TYK_AUTH=foo" \
@@ -32,14 +34,16 @@ then
         --from-literal "TYK_MODE=ce" \
         --from-literal "TYK_URL=http://tyk-svc.tyk.svc:8080" \
         --from-literal "TYK_TLS_INSECURE_SKIP_VERIFY=true"
-    echo "Set tyk-operator-conf secret: "
     kubectl get secret/tyk-operator-conf -n tyk-operator-system -o json | jq '.data'
     echo "Registering tyk-operator CRDs with Kubernetes.."
-    # kubectl apply -f ./charts/tyk-operator/helm/crds
+    curl https://raw.githubusercontent.com/TykTechnologies/tyk-operator/master/helm/crds/crds.yaml | kubectl apply -f -
     echo "Installing tyk-operator in tyk-operator-system namespace.."
-    helm install tyk-operator ./charts/tyk-operator/helm -n tyk-operator-system
-    echo "Successfully installed the tyk-operator :_)"
+    helm repo add tyk-helm https://helm.tyk.io/public/helm/charts/
+    helm repo update
+    helm install tyk-operator tyk-helm/tyk-operator -n tyk-operator-system
+    echo "Successfully installed the tyk stack!"
     exit 0
+
 elif [ $1 == "all-down" ]
 then 
     echo "Deleting 'tyk' and 'tyk-operator-system' namespaces'"
