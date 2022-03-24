@@ -1,4 +1,4 @@
-# Declarative API testing usign Postman's Newman SDK
+# Declarative API testing using Postman's Newman SDK
 
 1. Deploy our stack (Tyk APIG, Redis, ElasticSearch / Kibana, Tyk Pump & Tyk Operator)
 ```
