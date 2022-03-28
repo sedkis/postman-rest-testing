@@ -20,8 +20,12 @@ then
         exit 1
     fi
 
-    echo "Installing Tyk Operator"
+    
+    echo "Installing cert manager.."
+    kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager.yaml
+    echo "Successfully installed cert-manager."
 
+    echo "Installing Tyk Operator"
     echo "Creating tyk-operator-conf secret in tyk-operator-system namespace.."
     kubectl create secret -n tyk-operator-system generic tyk-operator-conf \
         --from-literal "TYK_AUTH=foo" \
@@ -46,12 +50,6 @@ then
     kubectl delete ns tyk
     kubectl delete ns tyk-operator-system
     kubectl delete ns apps
-    exit 0
-elif [ $1 == "install-cert-manager" ]
-then 
-    echo "Installing cert manager.."
-    kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager.yaml
-    echo "Successfully installed cert-manager. Use './launch.sh status-cert-manager' to see it's status :)"
     exit 0
 elif [ $1 == "delete-cert-manager" ]
 then
