@@ -19,7 +19,6 @@ then
         echo "You must install (and wait to come to life) cert-manager by using './launch.sh install-cert-manager'"
         exit 1
     fi
-
     
     echo "Installing cert manager.."
     kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.0.3/cert-manager.yaml
@@ -46,7 +45,12 @@ then
 elif [ $1 == "all-down" ]
 then 
     echo "Deleting all resources"
+    kubectl delete crd portalapicatalogues.tyk.tyk.io
+    kubectl delete crd portalconfigs.tyk.tyk.io      
+    kubectl delete crd apidescriptions.tyk.tyk.io
+    kubectl delete crd securitypolicies.tyk.tyk.io   
     kubectl delete crd apidefinitions.tyk.tyk.io
+    kubectl delete crd operatorcontexts.tyk.tyk.io
     kubectl delete ns tyk
     kubectl delete ns tyk-operator-system
     kubectl delete ns apps

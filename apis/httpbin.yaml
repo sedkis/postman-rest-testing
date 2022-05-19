@@ -44,6 +44,8 @@ metadata:
   namespace: tyk
 spec:
   name: httpbin
+  # Set "use_keyless" to false when you want to secure your API
+  # And then also uncomment the security policy CRD
   use_keyless: true
   protocol: http
   active: true
@@ -52,3 +54,22 @@ spec:
     target_url: http://httpbin.apps:8000
     listen_path: /httpbin
     strip_listen_path: true
+# ---
+# apiVersion: tyk.tyk.io/v1alpha1
+# kind: SecurityPolicy
+# metadata:
+#   name: httpbin
+#   namespace: tyk
+# spec:
+#   name: Rate Limit, Quota and Throttling policy
+#   state: active
+#   active: true
+#   access_rights_array:
+#     - name: httpbin
+#       namespace: tyk
+#       versions:
+#         - Default
+#   quota_max: 50
+#   quota_renewal_rate: 60
+#   rate: 2
+#   per: 10
