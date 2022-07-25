@@ -1,0 +1,19 @@
+apiVersion: tyk.tyk.io/v1alpha1
+kind: ApiDefinition
+metadata:
+  name: tyk-dashboard
+  namespace: tyk
+spec:
+  name: Tyk API Manager
+  # Set "use_keyless" to false when you want to secure your API
+  # And then also uncomment the security policy CRD
+  use_keyless: true
+  protocol: http
+  active: true
+  do_not_track: false
+  domain: dashboard.tyk.gke.com
+  proxy:
+    target_url: http://dashboard-svc-tyk-pro:3000
+    listen_path: /
+    strip_listen_path: true
+    preserve_host_header: true
